@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IDAP - Sistema de Alertas</title>
+<title>IDAP - Interface de Divulgação de Alertas Públicos</title>
 
 <style>
   * {
@@ -14,32 +14,72 @@
     font-family: Arial, sans-serif;
   }
 
-  body {
-    background: #f4f6f9;
+  :root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #333333;
+    --border: #e5e5e5;
+    --input-bg: #ffffff;
+    --banner: #1b8f3c;
+    --alerta: #ef6c42;
+    --alerta-hover: #d95a31;
+    --overlay: rgba(0, 0, 0, 0.45);
   }
 
-  .banner {
-    background: #c62828;
-    color: #fff;
-    text-align: center;
-    padding: 24px;
-    font-size: 32px;
-    font-weight: bold;
-    letter-spacing: 4px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  body.dark-mode {
+    --bg: #121212;
+    --card: #1f1f1f;
+    --text: #e5e5e5;
+    --border: #333333;
+    --input-bg: #2b2b2b;
+    --overlay: rgba(0, 0, 0, 0.7);
   }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+  }
+
+  /* Banner */
+
+  .banner {
+    width: 100%;
+    background: var(--banner);
+    color: #fff;
+    padding: 24px 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+  }
+
+  .banner-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .banner-title {
+    font-size: 34px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
+
+  .banner-subtitle {
+    font-size: 20px;
+  }
+
+  /* Conteúdo */
 
   .container {
     max-width: 700px;
     margin: 30px auto;
-    background: #fff;
+    background: var(--card);
     padding: 25px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,.1);
   }
 
   h2 {
-    color: #333;
     margin-bottom: 25px;
   }
 
@@ -47,16 +87,17 @@
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #444;
   }
 
   textarea,
   select {
     width: 100%;
     padding: 12px;
-    border: 1px solid #d5d5d5;
-    border-radius: 6px;
     margin-bottom: 20px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    border-radius: 6px;
     font-size: 15px;
   }
 
@@ -64,18 +105,24 @@
     resize: vertical;
   }
 
+  /* Botões */
+
+  .btn,
   .btn-avancar {
-    background: #ef6c42;
-    color: #fff;
     border: none;
+    background: var(--alerta);
+    color: white;
     padding: 12px 24px;
-    cursor: pointer;
+    min-width: 170px;
     font-weight: bold;
+    cursor: pointer;
     border-radius: 0;
+    transition: 0.2s;
   }
 
+  .btn:hover,
   .btn-avancar:hover {
-    background: #d95a31;
+    background: var(--alerta-hover);
   }
 
   /* Modal */
@@ -84,7 +131,7 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: var(--overlay);
     justify-content: center;
     align-items: center;
     z-index: 9999;
@@ -93,15 +140,14 @@
   .modal-content {
     width: 90%;
     max-width: 650px;
-    background: #fff;
+    background: var(--card);
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
   }
 
   .modal-header {
     padding: 18px 20px;
-    border-bottom: 1px solid #e5e5e5;
-    color: #666;
+    border-bottom: 1px solid var(--border);
     font-size: 18px;
     font-weight: bold;
   }
@@ -111,8 +157,8 @@
   }
 
   .alerta-box {
-    background: #ef6c42;
-    color: #fff;
+    background: var(--alerta);
+    color: white;
     padding: 18px;
     margin-bottom: 25px;
     text-align: center;
@@ -126,30 +172,29 @@
 
   .alerta-razao {
     font-size: 18px;
-    font-weight: normal;
   }
 
   .subtitulo {
     text-align: center;
-    color: #888;
     margin-bottom: 20px;
+    opacity: 0.8;
   }
 
   .devices {
     display: flex;
     justify-content: center;
     gap: 70px;
-    margin-bottom: 30px;
     flex-wrap: wrap;
+    margin-bottom: 30px;
   }
 
   .device-option {
     display: flex;
     flex-direction: column;
     align-items: center;
-    cursor: pointer;
     text-align: center;
     max-width: 180px;
+    cursor: pointer;
   }
 
   .device-option img {
@@ -158,36 +203,12 @@
     margin-bottom: 10px;
   }
 
-  .device-option input {
-    margin-right: 6px;
-  }
-
   .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding: 15px 20px;
-    border-top: 1px solid #e5e5e5;
-  }
-
-  .btn {
-    border: none;
-    padding: 12px 24px;
-    min-width: 170px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 0;
-  }
-
-  .btn-voltar,
-  .btn-confirmar {
-    background: #ef6c42;
-    color: #fff;
-  }
-
-  .btn-voltar:hover,
-  .btn-confirmar:hover {
-    background: #d95a31;
+    border-top: 1px solid var(--border);
   }
 
   #resultadoEnvio {
@@ -195,13 +216,39 @@
     text-align: center;
     font-weight: bold;
   }
+
+  /* Botão de tema */
+
+  .theme-toggle {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: var(--banner);
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,.3);
+    z-index: 10000;
+    transition: transform 0.3s;
+  }
+
+  .theme-toggle:hover {
+    transform: rotate(45deg);
+  }
 </style>
 </head>
 
 <body>
 
 <div class="banner">
-  IDAP
+  <div class="banner-content">
+    <div class="banner-title">IDAP</div>
+    <div class="banner-subtitle">- Interface de Divulgação de Alertas Públicos</div>
+  </div>
 </div>
 
 <div class="container">
@@ -225,7 +272,7 @@
 
     <textarea
       id="razao"
-      rows="3"
+      rows="4"
       placeholder="Descreva a razão..."
       required></textarea>
 
@@ -312,11 +359,11 @@
 
     <div class="modal-footer">
 
-      <button type="button" class="btn btn-voltar" onclick="voltar()">
+      <button type="button" class="btn" onclick="voltar()">
         Voltar
       </button>
 
-      <button type="button" class="btn btn-confirmar" onclick="confirmarEnvio()">
+      <button type="button" class="btn" onclick="confirmarEnvio()">
         Confirmar envio
       </button>
 
@@ -326,10 +373,32 @@
 
 </div>
 
+<button id="themeToggle" class="theme-toggle" title="Alterar tema">
+  ⚙️
+</button>
+
 <script>
   const form = document.getElementById("alertaForm");
   const modal = document.getElementById("modalEnvio");
+  const themeToggle = document.getElementById("themeToggle");
 
+  // Carrega tema salvo
+  if (localStorage.getItem("temaIDAP") === "escuro") {
+    document.body.classList.add("dark-mode");
+  }
+
+  // Alterna tema
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    const tema = document.body.classList.contains("dark-mode")
+      ? "escuro"
+      : "claro";
+
+    localStorage.setItem("temaIDAP", tema);
+  });
+
+  // Abre modal
   form.addEventListener("submit", function(e) {
     e.preventDefault();
 
@@ -349,12 +418,13 @@
     modal.style.display = "flex";
   });
 
+  // Fecha modal
   function voltar() {
     modal.style.display = "none";
-
     document.getElementById("resultadoEnvio").innerHTML = "";
   }
 
+  // Confirma envio
   function confirmarEnvio() {
     const celular = document.getElementById("sendCelular").checked;
     const pc = document.getElementById("sendPC").checked;
@@ -368,13 +438,8 @@
 
     const dispositivos = [];
 
-    if (celular) {
-      dispositivos.push("Celular");
-    }
-
-    if (pc) {
-      dispositivos.push("Computadores com IDAP Perk");
-    }
+    if (celular) dispositivos.push("Celular");
+    if (pc) dispositivos.push("Computadores com IDAP Perk");
 
     resultado.style.color = "#2e7d32";
     resultado.innerHTML =
