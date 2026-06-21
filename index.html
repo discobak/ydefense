@@ -216,6 +216,11 @@
   </div>
 
   <script>
+    // Alternância de tema
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
     const form = document.getElementById('alertForm');
     const formContainer = document.getElementById('formContainer');
     const confirmContainer = document.getElementById('confirmContainer');
@@ -230,3 +235,4 @@
 
       bannerText.innerHTML = `
         <strong>Alerta de ${razao}</strong><br>
+        Gravidade:
