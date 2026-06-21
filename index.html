@@ -5,32 +5,95 @@
   <title>IDAP</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #f5f5f5;
+      --text-color: #333;
+      --header-bg: #1351b4;
+      --header-text: #fff;
+      --card-bg: #fff;
+      --banner-bg: #d32f2f;
+      --banner-icon-bg: #1976d2;
+    }
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --header-bg: #0d47a1;
+      --header-text: #fff;
+      --card-bg: #1e1e1e;
+      --banner-bg: #b71c1c;
+      --banner-icon-bg: #1565c0;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
-      background: #f5f5f5;
-      color: #333;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
     }
     header {
-      background: #1351b4;
-      color: #fff;
+      background: var(--header-bg);
+      color: var(--header-text);
       padding: 20px;
       text-align: center;
+      position: relative;
     }
     header h1 {
       margin: 0;
       font-size: 2em;
     }
+    .theme-toggle {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: #fff;
+      color: #333;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    body.dark .theme-toggle {
+      background: #333;
+      color: #fff;
+    }
     .container {
       max-width: 800px;
       margin: 30px auto;
-      background: #fff;
+      background: var(--card-bg);
       border-radius: 8px;
       padding: 30px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    button {
+      background: var(--header-bg);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0d3d85;
     }
     .banner {
-      background: #d32f2f;
+      background: var(--banner-bg);
       color: #fff;
       padding: 20px;
       border-radius: 6px;
@@ -39,7 +102,7 @@
       margin-bottom: 20px;
     }
     .banner-icon {
-      background: #1976d2;
+      background: var(--banner-icon-bg);
       border-radius: 50%;
       width: 40px;
       height: 40px;
@@ -55,9 +118,11 @@
       gap: 40px;
       margin: 20px 0;
     }
-    .devices img {
-      width: 80px;
-      opacity: 0.8;
+    .device-option {
+      text-align: center;
+    }
+    .device-option input {
+      margin-top: 10px;
     }
     .buttons {
       display: flex;
@@ -88,28 +153,80 @@
 <body>
   <header>
     <h1>IDAP - Defesa Civil</h1>
-    <p>Confirmação de envio de alerta</p>
+    <p>Sistema de Alertas Públicos</p>
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark/Light</button>
   </header>
 
-  <div class="container">
+  <!-- Formulário inicial -->
+  <div class="container" id="formContainer">
+    <h2>Criar Alerta</h2>
+    <form id="alertForm">
+      <label for="gravidade">Gravidade</label>
+      <select id="gravidade" required>
+        <option value="">Selecione...</option>
+        <option value="Extremo">Extremo</option>
+        <option value="Severo">Severo</option>
+        <option value="Mínimo">Mínimo</option>
+      </select>
+
+      <label for="razao">Razão do Alerta</label>
+      <textarea id="razao" rows="3" placeholder="Descreva a razão..." required></textarea>
+
+      <label for="estado">Estado</label>
+      <select id="estado" required>
+        <option value="">Selecione...</option>
+        <option>Acre</option><option>Alagoas</option><option>Amapá</option><option>Amazonas</option>
+        <option>Bahia</option><option>Ceará</option><option>Distrito Federal</option><option>Espírito Santo</option>
+        <option>Goiás</option><option>Maranhão</option><option>Mato Grosso</option><option>Mato Grosso do Sul</option>
+        <option>Minas Gerais</option><option>Pará</option><option>Paraíba</option><option>Paraná</option>
+        <option>Pernambuco</option><option>Piauí</option><option>Rio de Janeiro</option><option>Rio Grande do Norte</option>
+        <option>Rio Grande do Sul</option><option>Rondônia</option><option>Roraima</option><option>Santa Catarina</option>
+        <option>São Paulo</option><option>Sergipe</option><option>Tocantins</option>
+      </select>
+
+      <button type="submit">Avançar</button>
+    </form>
+  </div>
+
+  <!-- Tela de confirmação -->
+  <div class="container" id="confirmContainer" style="display:none;">
+    <h2>Confirmação de envio de alerta da Defesa Civil</h2>
     <div class="banner">
       <div class="banner-icon">!</div>
-      <div>
-        <strong>Alerta de Alagamento</strong><br>
-        Severidade: Muito alta
+      <div id="bannerText"></div>
+    </div>
+
+    <p>Selecione para onde enviar:</p>
+    <div class="devices">
+      <div class="device-option">
+        <img src="https://img.icons8.com/ios-filled/100/000000/smartphone.png" alt="Celular">
+        <div><input type="checkbox" id="sendCelular"> Celular</div>
+      </div>
+      <div class="device-option">
+        <img src="https://img.icons8.com/ios-filled/100/000000/computer.png" alt="Computador">
+        <div><input type="checkbox" id="sendPC"> Computador/TV</div>
       </div>
     </div>
 
-    <div class="devices">
-      <!-- Ícones simples (pode trocar por SVG oficiais) -->
-      <img src="https://img.icons8.com/ios-filled/100/000000/smartphone.png" alt="Celular">
-      <img src="https://img.icons8.com/ios-filled/100/000000/tv.png" alt="Televisão">
-    </div>
-
     <div class="buttons">
-      <button class="btn-green">Confirmar envio</button>
-      <button class="btn-yellow">Cancelar</button>
+      <button class="btn-green" onclick="confirmarEnvio()">Confirmar envio</button>
+      <button class="btn-yellow" onclick="voltar()">Voltar</button>
     </div>
+    <div id="resultadoEnvio"></div>
   </div>
-</body>
-</html>
+
+  <script>
+    const form = document.getElementById('alertForm');
+    const formContainer = document.getElementById('formContainer');
+    const confirmContainer = document.getElementById('confirmContainer');
+    const bannerText = document.getElementById('bannerText');
+    const resultadoEnvio = document.getElementById('resultadoEnvio');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const gravidade = document.getElementById('gravidade').value;
+      const razao = document.getElementById('razao').value;
+      const estado = document.getElementById('estado').value;
+
+      bannerText.innerHTML = `
+        <strong>Alerta de ${razao}</strong><br>
