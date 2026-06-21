@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>IDAP</title>
-  <!-- Fonte institucional parecida com GOV.BR -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -23,113 +22,94 @@
       font-size: 2em;
     }
     .container {
-      max-width: 900px;
+      max-width: 800px;
       margin: 30px auto;
       background: #fff;
       border-radius: 8px;
       padding: 30px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    h2 {
-      color: #1351b4;
-      margin-top: 0;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
+    .banner {
+      background: #d32f2f;
+      color: #fff;
+      padding: 20px;
       border-radius: 6px;
-      font-size: 1em;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
     }
-    button {
-      background: #1351b4;
+    .banner-icon {
+      background: #1976d2;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-size: 1.5em;
+    }
+    .devices {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin: 20px 0;
+    }
+    .devices img {
+      width: 80px;
+      opacity: 0.8;
+    }
+    .buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .btn-green {
+      background: #4caf50;
       color: #fff;
       border: none;
       padding: 12px 20px;
       border-radius: 6px;
       cursor: pointer;
       font-size: 1em;
-      transition: background 0.3s;
     }
-    button:hover {
-      background: #0d3d85;
-    }
-    .alert-card {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 8px;
-      background: #eaf2f9;
-      border-left: 6px solid #1351b4;
-    }
-    .alert-card h3 {
-      margin-top: 0;
+    .btn-yellow {
+      background: #fbc02d;
+      color: #333;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>IDAP - Integração de Dados de Alertas Públicos</h1>
-    <p>Serviço digital para criação e consulta de alertas</p>
+    <h1>IDAP - Defesa Civil</h1>
+    <p>Confirmação de envio de alerta</p>
   </header>
 
   <div class="container">
-    <h2>Criar Alerta</h2>
-    <form id="alertForm">
-      <label for="gravidade">Gravidade</label>
-      <select id="gravidade" required>
-        <option value="">Selecione...</option>
-        <option value="Extremo">Extremo</option>
-        <option value="Severo">Severo</option>
-        <option value="Mínimo">Mínimo</option>
-      </select>
+    <div class="banner">
+      <div class="banner-icon">!</div>
+      <div>
+        <strong>Alerta de Alagamento</strong><br>
+        Severidade: Muito alta
+      </div>
+    </div>
 
-      <label for="razao">Razão do Alerta</label>
-      <textarea id="razao" rows="3" placeholder="Descreva a razão..." required></textarea>
+    <div class="devices">
+      <!-- Ícones simples (pode trocar por SVG oficiais) -->
+      <img src="https://img.icons8.com/ios-filled/100/000000/smartphone.png" alt="Celular">
+      <img src="https://img.icons8.com/ios-filled/100/000000/tv.png" alt="Televisão">
+    </div>
 
-      <label for="estado">Estado</label>
-      <select id="estado" required>
-        <option value="">Selecione...</option>
-        <option>Acre</option><option>Alagoas</option><option>Amapá</option><option>Amazonas</option>
-        <option>Bahia</option><option>Ceará</option><option>Distrito Federal</option><option>Espírito Santo</option>
-        <option>Goiás</option><option>Maranhão</option><option>Mato Grosso</option><option>Mato Grosso do Sul</option>
-        <option>Minas Gerais</option><option>Pará</option><option>Paraíba</option><option>Paraná</option>
-        <option>Pernambuco</option><option>Piauí</option><option>Rio de Janeiro</option><option>Rio Grande do Norte</option>
-        <option>Rio Grande do Sul</option><option>Rondônia</option><option>Roraima</option><option>Santa Catarina</option>
-        <option>São Paulo</option><option>Sergipe</option><option>Tocantins</option>
-      </select>
-
-      <button type="submit">Criar Alerta</button>
-    </form>
-
-    <div id="alertaResultado"></div>
+    <div class="buttons">
+      <button class="btn-green">Confirmar envio</button>
+      <button class="btn-yellow">Cancelar</button>
+    </div>
   </div>
-
-  <script>
-    const form = document.getElementById('alertForm');
-    const resultado = document.getElementById('alertaResultado');
-
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const gravidade = document.getElementById('gravidade').value;
-      const razao = document.getElementById('razao').value;
-      const estado = document.getElementById('estado').value;
-
-      resultado.innerHTML = `
-        <div class="alert-card">
-          <h3>Alerta Criado</h3>
-          <p><strong>Gravidade:</strong> ${gravidade}</p>
-          <p><strong>Razão:</strong> ${razao}</p>
-          <p><strong>Estado:</strong> ${estado}</p>
-        </div>
-      `;
-      form.reset();
-    });
-  </script>
 </body>
 </html>
