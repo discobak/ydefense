@@ -2,61 +2,118 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Your Defense</title>
+  <title>IDAP - Alertas</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
       text-align: center;
-      padding: 50px;
+      padding: 40px 20px;
     }
-    h1 {
+    header h1 {
+      font-size: 2.5em;
+      margin: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
       color: #333;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     }
-    .btn {
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    select, input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    button {
       background: #007BFF;
-      color: white;
-      padding: 15px 25px;
+      color: #fff;
       border: none;
-      border-radius: 5px;
+      padding: 15px 25px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 1em;
+      transition: background 0.3s;
     }
-    .btn:hover {
+    button:hover {
       background: #0056b3;
     }
-    .alert-box {
+    .alert-card {
       margin-top: 30px;
       padding: 20px;
-      border: 2px solid #333;
       border-radius: 10px;
-      background: #fff;
-      display: none;
+      background: #f8f9fa;
+      border-left: 6px solid #007BFF;
+    }
+    .alert-card h2 {
+      margin-top: 0;
     }
   </style>
 </head>
 <body>
-  <h1>🚨 Your Defense 🚨</h1>
-  <p>Crie alertas personalizados para estados brasileiros.</p>
-  <button class="btn" onclick="criarAlerta()">Criar Alerta</button>
+  <header>
+    <h1>🚨 IDAP - Sistema de Alertas 🚨</h1>
+    <p>Crie e visualize alertas para estados brasileiros</p>
+  </header>
 
-  <div id="alerta" class="alert-box"></div>
+  <div class="container">
+    <form id="alertForm">
+      <label for="gravidade">Gravidade</label>
+      <select id="gravidade" required>
+        <option value="">Selecione...</option>
+        <option value="Extremo">Extremo</option>
+        <option value="Severo">Severo</option>
+        <option value="Mínimo">Mínimo</option>
+      </select>
+
+      <label for="razao">Razão do Alerta</label>
+      <textarea id="razao" rows="3" placeholder="Descreva a razão..." required></textarea>
+
+      <label for="estados">Estados</label>
+      <input id="estados" type="text" placeholder="Digite os estados separados por vírgula" required />
+
+      <button type="submit">Criar Alerta</button>
+    </form>
+
+    <div id="alertaResultado"></div>
+  </div>
 
   <script>
-    function criarAlerta() {
-      const gravidade = prompt("Escolha a gravidade: Extremo, Severo ou Mínimo");
-      const razao = prompt("Digite a razão do alerta:");
-      const estados = prompt("Quais estados devem receber o alerta? (separados por vírgula)");
+    const form = document.getElementById('alertForm');
+    const resultado = document.getElementById('alertaResultado');
 
-      const alertaDiv = document.getElementById("alerta");
-      alertaDiv.style.display = "block";
-      alertaDiv.innerHTML = `
-        <h2>⚠️ Alerta Criado ⚠️</h2>
-        <p><strong>Gravidade:</strong> ${gravidade}</p>
-        <p><strong>Razão:</strong> ${razao}</p>
-        <p><strong>Estados:</strong> ${estados}</p>
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const gravidade = document.getElementById('gravidade').value;
+      const razao = document.getElementById('razao').value;
+      const estados = document.getElementById('estados').value;
+
+      resultado.innerHTML = `
+        <div class="alert-card">
+          <h2>⚠️ Alerta Criado ⚠️</h2>
+          <p><strong>Gravidade:</strong> ${gravidade}</p>
+          <p><strong>Razão:</strong> ${razao}</p>
+          <p><strong>Estados:</strong> ${estados}</p>
+        </div>
       `;
-    }
+      form.reset();
+    });
   </script>
 </body>
 </html>
