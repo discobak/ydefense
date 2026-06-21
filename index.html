@@ -1,238 +1,327 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>IDAP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #f5f5f5;
-      --text-color: #333;
-      --header-bg: #1351b4;
-      --header-text: #fff;
-      --card-bg: #fff;
-      --banner-bg: #d32f2f;
-      --banner-icon-bg: #1976d2;
-    }
-    body.dark {
-      --bg-color: #121212;
-      --text-color: #eee;
-      --header-bg: #0d47a1;
-      --header-text: #fff;
-      --card-bg: #1e1e1e;
-      --banner-bg: #b71c1c;
-      --banner-icon-bg: #1565c0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      background: var(--bg-color);
-      color: var(--text-color);
-      transition: background 0.3s, color 0.3s;
-    }
-    header {
-      background: var(--header-bg);
-      color: var(--header-text);
-      padding: 20px;
-      text-align: center;
-      position: relative;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    .theme-toggle {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      background: #fff;
-      color: #333;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.9em;
-    }
-    body.dark .theme-toggle {
-      background: #333;
-      color: #fff;
-    }
-    .container {
-      max-width: 800px;
-      margin: 30px auto;
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: background 0.3s;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1em;
-    }
-    button {
-      background: var(--header-bg);
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #0d3d85;
-    }
-    .banner {
-      background: var(--banner-bg);
-      color: #fff;
-      padding: 20px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .banner-icon {
-      background: var(--banner-icon-bg);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 15px;
-      font-size: 1.5em;
-    }
-    .devices {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin: 20px 0;
-    }
-    .device-option {
-      text-align: center;
-    }
-    .device-option input {
-      margin-top: 10px;
-    }
-    .buttons {
-      display: flex;
-      justify-content: flex-end;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .btn-green {
-      background: #4caf50;
-      color: #fff;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-    .btn-yellow {
-      background: #fbc02d;
-      color: #333;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1em;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alerta da Defesa Civil</title>
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    background: #f4f6f9;
+    padding: 30px;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #444;
+  }
+
+  textarea,
+  select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  .btn-avancar {
+    background: #00a884;
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+  }
+
+  .btn-avancar:hover {
+    background: #008f71;
+  }
+
+  /* Modal */
+
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 650px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #666;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+
+  .alerta-box {
+    background: #ef6c42;
+    color: #fff;
+    padding: 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
+
+  .subtitulo {
+    text-align: center;
+    color: #888;
+    margin-bottom: 20px;
+  }
+
+  .devices {
+    display: flex;
+    justify-content: center;
+    gap: 70px;
+    margin-bottom: 30px;
+  }
+
+  .device-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .device-option img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .device-option input {
+    margin-right: 6px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 15px 20px;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .btn-voltar {
+    background: #f4b400;
+    color: #fff;
+  }
+
+  .btn-confirmar {
+    background: #4caf50;
+    color: #fff;
+  }
+
+  #resultadoEnvio {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>IDAP - Defesa Civil</h1>
-    <p>Sistema de Alertas Públicos</p>
-    <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark/Light</button>
-  </header>
 
-  <!-- Formulário inicial -->
-  <div class="container" id="formContainer">
-    <h2>Criar Alerta</h2>
-    <form id="alertForm">
-      <label for="gravidade">Gravidade</label>
-      <select id="gravidade" required>
-        <option value="">Selecione...</option>
-        <option value="Extremo">Extremo</option>
-        <option value="Severo">Severo</option>
-        <option value="Mínimo">Mínimo</option>
-      </select>
+<div class="container">
 
-      <label for="razao">Razão do Alerta</label>
-      <textarea id="razao" rows="3" placeholder="Descreva a razão..." required></textarea>
+  <h1>Criar Alerta</h1>
 
-      <label for="estado">Estado</label>
-      <select id="estado" required>
-        <option value="">Selecione...</option>
-        <option>Acre</option><option>Alagoas</option><option>Amapá</option><option>Amazonas</option>
-        <option>Bahia</option><option>Ceará</option><option>Distrito Federal</option><option>Espírito Santo</option>
-        <option>Goiás</option><option>Maranhão</option><option>Mato Grosso</option><option>Mato Grosso do Sul</option>
-        <option>Minas Gerais</option><option>Pará</option><option>Paraíba</option><option>Paraná</option>
-        <option>Pernambuco</option><option>Piauí</option><option>Rio de Janeiro</option><option>Rio Grande do Norte</option>
-        <option>Rio Grande do Sul</option><option>Rondônia</option><option>Roraima</option><option>Santa Catarina</option>
-        <option>São Paulo</option><option>Sergipe</option><option>Tocantins</option>
-      </select>
+  <form id="alertaForm">
 
-      <button type="submit">Avançar</button>
-    </form>
+    <label for="razao">Razão do Alerta</label>
+    <textarea
+      id="razao"
+      rows="3"
+      placeholder="Descreva a razão..."
+      required></textarea>
+
+    <label for="estado">Estado</label>
+
+    <select id="estado" required>
+      <option value="">Selecione...</option>
+      <option>Acre</option>
+      <option>Alagoas</option>
+      <option>Amapá</option>
+      <option>Amazonas</option>
+      <option>Bahia</option>
+      <option>Ceará</option>
+      <option>Distrito Federal</option>
+      <option>Espírito Santo</option>
+      <option>Goiás</option>
+      <option>Maranhão</option>
+      <option>Mato Grosso</option>
+      <option>Mato Grosso do Sul</option>
+      <option>Minas Gerais</option>
+      <option>Pará</option>
+      <option>Paraíba</option>
+      <option>Paraná</option>
+      <option>Pernambuco</option>
+      <option>Piauí</option>
+      <option>Rio de Janeiro</option>
+      <option>Rio Grande do Norte</option>
+      <option>Rio Grande do Sul</option>
+      <option>Rondônia</option>
+      <option>Roraima</option>
+      <option>Santa Catarina</option>
+      <option>São Paulo</option>
+      <option>Sergipe</option>
+      <option>Tocantins</option>
+    </select>
+
+    <button type="submit" class="btn-avancar">Avançar</button>
+
+  </form>
+
+</div>
+
+<div id="modalEnvio" class="modal">
+
+  <div class="modal-content">
+
+    <div class="modal-header">
+      Confirmação do envio do alerta da Defesa Civil
+    </div>
+
+    <div class="modal-body">
+
+      <div class="alerta-box">
+        ⚠️ Alerta de Apagamento - severidade Muito alta
+      </div>
+
+      <p class="subtitulo">Selecione para onde enviar:</p>
+
+      <div class="devices">
+
+        <label class="device-option">
+          <img src="https://img.icons8.com/ios-filled/100/000000/smartphone.png" alt="Celular">
+
+          <div>
+            <input type="checkbox" id="sendCelular">
+            Celular
+          </div>
+        </label>
+
+        <label class="device-option">
+          <img src="https://img.icons8.com/ios-filled/100/000000/computer.png" alt="Computador">
+
+          <div>
+            <input type="checkbox" id="sendPC">
+            Computador/TV
+          </div>
+        </label>
+
+      </div>
+
+      <div id="resultadoEnvio"></div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-voltar" onclick="voltar()">
+        Voltar
+      </button>
+
+      <button class="btn btn-confirmar" onclick="confirmarEnvio()">
+        Confirmar envio
+      </button>
+    </div>
+
   </div>
 
-  <!-- Tela de confirmação -->
-  <div class="container" id="confirmContainer" style="display:none;">
-    <h2>Confirmação de envio de alerta da Defesa Civil</h2>
-    <div class="banner">
-      <div class="banner-icon">!</div>
-      <div id="bannerText"></div>
-    </div>
+</div>
 
-    <p>Selecione para onde enviar:</p>
-    <div class="devices">
-      <div class="device-option">
-        <img src="https://img.icons8.com/ios-filled/100/000000/smartphone.png" alt="Celular">
-        <div><input type="checkbox" id="sendCelular"> Celular</div>
-      </div>
-      <div class="device-option">
-        <img src="https://img.icons8.com/ios-filled/100/000000/computer.png" alt="Computador">
-        <div><input type="checkbox" id="sendPC"> Computador/TV</div>
-      </div>
-    </div>
+<script>
+  const form = document.getElementById("alertaForm");
+  const modal = document.getElementById("modalEnvio");
 
-    <div class="buttons">
-      <button class="btn-green" onclick="confirmarEnvio()">Confirmar envio</button>
-      <button class="btn-yellow" onclick="voltar()">Voltar</button>
-    </div>
-    <div id="resultadoEnvio"></div>
-  </div>
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  <script>
-    // Alternância de tema
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
+    modal.style.display = "flex";
+  });
+
+  function voltar() {
+    modal.style.display = "none";
+
+    document.getElementById("resultadoEnvio").innerHTML = "";
+  }
+
+  function confirmarEnvio() {
+    const celular = document.getElementById("sendCelular").checked;
+    const pc = document.getElementById("sendPC").checked;
+    const resultado = document.getElementById("resultadoEnvio");
+
+    if (!celular && !pc) {
+      resultado.style.color = "#d32f2f";
+      resultado.innerHTML = "Selecione pelo menos um dispositivo.";
+      return;
     }
 
-    const form = document.getElementById('alertForm');
-    const formContainer = document.getElementById('formContainer');
-    const confirmContainer = document.getElementById('confirmContainer');
-    const bannerText = document.getElementById('bannerText');
-    const resultadoEnvio = document.getElementById('resultadoEnvio');
+    const dispositivos = [];
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const gravidade = document.getElementById('gravidade').value;
-      const razao = document.getElementById('razao').value;
-      const estado = document.getElementById('estado').value;
+    if (celular) dispositivos.push("Celular");
+    if (pc) dispositivos.push("Computador/TV");
 
-      bannerText.innerHTML = `
-        <strong>Alerta de ${razao}</strong><br>
-        Gravidade:
+    resultado.style.color = "#2e7d32";
+    resultado.innerHTML =
+      "Alerta enviado para: " + dispositivos.join(", ");
+  }
+</script>
+
+</body>
+</html>
