@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Defense</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #333;
+    }
+    .btn {
+      background: #007BFF;
+      color: white;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+    .alert-box {
+      margin-top: 30px;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background: #fff;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚨 Your Defense 🚨</h1>
+  <p>Crie alertas personalizados para estados brasileiros.</p>
+  <button class="btn" onclick="criarAlerta()">Criar Alerta</button>
+
+  <div id="alerta" class="alert-box"></div>
+
+  <script>
+    function criarAlerta() {
+      const gravidade = prompt("Escolha a gravidade: Extremo, Severo ou Mínimo");
+      const razao = prompt("Digite a razão do alerta:");
+      const estados = prompt("Quais estados devem receber o alerta? (separados por vírgula)");
+
+      const alertaDiv = document.getElementById("alerta");
+      alertaDiv.style.display = "block";
+      alertaDiv.innerHTML = `
+        <h2>⚠️ Alerta Criado ⚠️</h2>
+        <p><strong>Gravidade:</strong> ${gravidade}</p>
+        <p><strong>Razão:</strong> ${razao}</p>
+        <p><strong>Estados:</strong> ${estados}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
